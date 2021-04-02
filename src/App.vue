@@ -22,6 +22,7 @@ export default {
 <style lang="scss">
 
 @import "@/assets/styles/weather.scss";
+@import "@/assets/styles/media.scss"; 
 
 *{
   padding:0;
@@ -30,9 +31,22 @@ export default {
 }
 
   h1{
+      color:white;
+        font-weight:400;
+        font-size:40px;
+        padding-top:50px;
+    @include mobile{
     padding-top:30px;
-  color:white;
-  font-weight:400;
+
+
+    }
+      @include mobile-small{
+    padding-top:20px;
+    font-size:30px;
+
+
+    }
+
   }
 
 
@@ -43,7 +57,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  height:700px;
+  height:800px;
 
 }
 

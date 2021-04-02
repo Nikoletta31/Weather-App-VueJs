@@ -1,15 +1,18 @@
 <template>
-  <div class="hello">
+  <div class="hello" >
     <div>
+      
 <input type="text" placeholder="Search..." class="search-bar" 
 v-model="query" v-on:keypress="fetchWeather" />
 </div>
 <div class="date"><p>
   {{ todaysDate() }}</p></div>
 
+<div class="flex-weather-box">
 <transition name="fade">
-<div class="weather-box" v-if="weatherBox">
-<h1 v-if="weather.sys">
+
+<div class="weather-box" v-if="weatherBox"  >
+<h1 v-if="weather.sys" >
   {{weather.name}}, {{weather.sys.country}}
 </h1>
 <p class="description">{{ weather.weather[0].description }}</p>
@@ -26,7 +29,19 @@ v-model="query" v-on:keypress="fetchWeather" />
 
  </div>
 </div>
+
 </transition>
+<transition name="fade">
+<div class="additional-weather-box" v-if="weatherBox">
+  <p><i class="fas fa-tint"></i>   Humidity: {{weather.main.humidity}}%</p>
+  <p><i class="fas fa-wind"></i> Wind speed: {{weather.wind.speed}} km/h</p>
+  <p><i class="fas fa-compress-arrows-alt"></i> Pressure: {{weather.main.pressure}} hPa</p>
+  <p><i class="fas fa-eye"></i> Visibilty: {{weather.visibility}} </p>
+  <p><i class="fas fa-cloud"></i>Clouds: {{weather.clouds.all}} %</p>
+  <p><i class="fas fa-temperature-low"></i>Feels like: {{ Math.round((weather.main.feels_like - 273.15))}}°c</p>
+  </div>
+</transition>
+</div>
   </div>
 
 </template>
@@ -49,17 +64,30 @@ export default {
 computed: {
 
 },
+
+  watch: {
+  
+  }, 
+
  methods: {
+
+   isRed() {
+      document.querySelector('body').style.backgroundColor = (this.weather.weather[0].icon === '01n' ) ? 'red' : null;
+      console.log("hello")
+    },
+
    async fetchWeather(e) {
  if (e.key == "Enter") {
   let response = await axios.get(`${this.url_base}weather?q=${this.query}&appid=${this.api_key}`);
   this.weatherBox = true;
  this.weather = response.data;
  this.query = "";
-
+this.isRed();
  console.log(this.weather)
  }
 },
+
+
 todaysDate() {
 const months = [
 "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov",
