@@ -16,7 +16,7 @@ v-model="query" v-on:keypress="fetchWeather" />
   <i class="fas fa-chevron-down arrow" @click="searchBox = !searchBox"></i>
 
 
-
+<div class="flex-weather">
 <div class="weather-box" v-if="weatherBox" >
 <h1 v-if="weather.sys" >
   {{weather.name}}, {{weather.sys.country}}
@@ -47,6 +47,7 @@ v-model="query" v-on:keypress="fetchWeather" />
   <p><i class="fas fa-temperature-low"></i>Feels like: {{ Math.round((weather.main.feels_like - 273.15))}}°c</p>
   </div>
 
+</div>
 </div>
 </transition>
   </div>
