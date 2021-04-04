@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-<div>
-  <h1>The weather in...</h1>
-</div>
+
      <Weather />
   </div>
 </template>

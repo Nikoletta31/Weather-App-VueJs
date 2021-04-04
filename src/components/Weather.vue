@@ -1,17 +1,23 @@
 <template>
-  <div class="hello" >
-    <div>
-      
+  <div class="hello">
+    
+    <transition name="bounce">
+    <div v-if="searchBox" class="search-box">
+    
 <input type="text" placeholder="Search..." class="search-bar" 
 v-model="query" v-on:keypress="fetchWeather" />
 </div>
-<div class="date"><p>
-  {{ todaysDate() }}</p></div>
-
-<div class="flex-weather-box">
+    </transition>
+<!--<div class="date"><p>
+  {{ todaysDate() }}</p></div> -->
 <transition name="fade">
+<div class="flex-weather-box" v-if="weather.weather" :style="{background: project_status}">
+  
+  <i class="fas fa-chevron-down arrow" @click="searchBox = !searchBox"></i>
 
-<div class="weather-box" v-if="weatherBox"  >
+
+
+<div class="weather-box" v-if="weatherBox" >
 <h1 v-if="weather.sys" >
   {{weather.name}}, {{weather.sys.country}}
 </h1>
@@ -30,8 +36,8 @@ v-model="query" v-on:keypress="fetchWeather" />
  </div>
 </div>
 
-</transition>
-<transition name="fade">
+
+
 <div class="additional-weather-box" v-if="weatherBox">
   <p><i class="fas fa-tint"></i>   Humidity: {{weather.main.humidity}}%</p>
   <p><i class="fas fa-wind"></i> Wind speed: {{weather.wind.speed}} km/h</p>
@@ -40,8 +46,9 @@ v-model="query" v-on:keypress="fetchWeather" />
   <p><i class="fas fa-cloud"></i>Clouds: {{weather.clouds.all}} %</p>
   <p><i class="fas fa-temperature-low"></i>Feels like: {{ Math.round((weather.main.feels_like - 273.15))}}°c</p>
   </div>
-</transition>
+
 </div>
+</transition>
   </div>
 
 </template>
@@ -59,10 +66,27 @@ export default {
    query: "",
    weather: {},
    weatherBox:false,
+   searchBox:true,
+   colorBack: "linear-gradient(164deg, rgba(211,211,212,1) 3%, rgba(175,176,176,1) 26%, rgba(150,153,154,1) 56%)", 
+   colorBackClear: "linear-gradient(164deg, rgba(190,214,221,1) 3%, rgba(147,200,213,1) 26%, rgba(116,171,185,1) 56%)",
+   colorShadow: "5px 10px 18px rgb(75, 84, 87)", 
+   colorShadowClear: "5px 10px 18px rgb(78, 123, 136)"
   };
  },
 computed: {
+    project_status() {
+        if (this.weather.weather[0].main === 'Clear') return this.colorBackClear;
+        else if (this.weather.weather[0].main === 'Clouds') return this.colorBack;
+        
+       return "red"
+    }, 
 
+       project_shadow() {
+        if (this.weather.weather[0].main === 'Clear') return this.colorShadowClear;
+        else if (this.weather.weather[0].main === 'Clouds') return this.colorShadow;
+        
+       return "red"
+    }
 },
 
   watch: {
@@ -71,9 +95,16 @@ computed: {
 
  methods: {
 
+searchOpen() {
+this.searchBox = true;
+},
+
+
+
    isRed() {
       document.querySelector('body').style.backgroundColor = (this.weather.weather[0].icon === '01n' ) ? 'red' : null;
       console.log("hello")
+      console.log(this.colorBack)
     },
 
    async fetchWeather(e) {
@@ -82,7 +113,7 @@ computed: {
   this.weatherBox = true;
  this.weather = response.data;
  this.query = "";
-this.isRed();
+this.searchBox = false;
  console.log(this.weather)
  }
 },
