@@ -16,7 +16,7 @@ v-model="query" v-on:keypress="fetchWeather" />
   <i class="fas fa-chevron-down arrow" @click="searchBox = !searchBox"></i>
 
 
-<div class="flex-weather">
+<div class="flex-weather" :style="{boxShadow: project_shadow}">
 <div class="weather-box" v-if="weatherBox" >
 <h1 v-if="weather.sys" >
   {{weather.name}}, {{weather.sys.country}}
